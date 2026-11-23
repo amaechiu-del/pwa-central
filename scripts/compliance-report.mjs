@@ -1,0 +1,10 @@
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { assessPwaCompliance } from "../src/compliance.js";
+import { validateRegistry } from "../src/registry.js";
+const registry=JSON.parse(readFileSync(new URL("../registry/apps.json",import.meta.url),"utf8"));
+const errors=validateRegistry(registry);
+if(errors.length) throw Error(errors.join("\n"));
+const reports=registry.applications.map(app=>assessPwaCompliance(app));
+mkdirSync("reports",{recursive:true});
+writeFileSync("reports/compliance.json",JSON.stringify({schemaVersion:1,generatedAt:new Date().toISOString(),reports},null,2)+"\n");
+console.log(reports.map(r=>`${r.id}: ${r.summary.pass} pass, ${r.summary.fail} fail, ${r.summary.unknown} unverified`).join("\n"));
