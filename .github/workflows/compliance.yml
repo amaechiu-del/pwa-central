@@ -18,8 +18,11 @@ jobs:
       - run: npm test
       - run: node scripts/check-registry.mjs
       - run: node scripts/compliance-report.mjs
+      - run: node scripts/export-control-feed.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: pwa-compliance-report
-          path: reports/compliance.json
+          path: |
+            reports/compliance.json
+            reports/control-centre-feed.json
           retention-days: 7
