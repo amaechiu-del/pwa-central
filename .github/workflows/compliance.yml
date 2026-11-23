@@ -1,0 +1,25 @@
+name: PWA registry compliance report
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compliance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: node scripts/check-registry.mjs
+      - run: node scripts/compliance-report.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pwa-compliance-report
+          path: reports/compliance.json
+          retention-days: 7
