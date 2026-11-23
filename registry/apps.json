@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "applications": [
+    {
+      "id": "headquarters",
+      "name": "DomisLink Headquarters",
+      "origin": "https://domislink.com",
+      "repository": "amaechiu-del/domislink.com",
+      "status": "pilot",
+      "manifestPath": "/manifest.webmanifest"
+    },
+    {
+      "id": "church",
+      "name": "DomisLink Church",
+      "origin": "https://church.domislink.com",
+      "repository": "amaechiu-del/domislink-church",
+      "status": "planned",
+      "manifestPath": "/manifest.webmanifest"
+    }
+  ]
+}
