@@ -1,0 +1,12 @@
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { assessPwaCompliance } from "../src/compliance.js";
+import { validateRegistry } from "../src/registry.js";
+import { toControlCentreFeed } from "../src/control-export.js";
+const registry=JSON.parse(readFileSync("registry/apps.json","utf8"));
+const errors=validateRegistry(registry);
+if(errors.length) throw new Error(errors.join("\n"));
+const reports=registry.applications.map(app=>assessPwaCompliance(app));
+const feed=toControlCentreFeed(registry,reports,new Date().toISOString());
+mkdirSync("reports",{recursive:true});
+writeFileSync("reports/control-centre-feed.json",JSON.stringify(feed,null,2)+"\n");
+console.log("Control Centre feed exported for "+feed.applications.length+" registered applications");
